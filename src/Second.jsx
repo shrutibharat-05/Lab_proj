@@ -1,10 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client'; // Correct import for React 18
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom/client';
 import { Link } from 'react-router-dom';
 
 function Second() {
+  const [progress, setProgress] = useState(0);
+  const [isLabStarted, setIsLabStarted] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    if (isLabStarted && progress < 100) {
+      timer = setInterval(() => {
+        setProgress(prev => (prev < 100 ? prev + 1 : 100));
+      }, 300); // Adjust the interval time for faster/slower progress
+    } 
+    return () => clearInterval(timer);
+  }, [isLabStarted, progress]);
+
+  const startLab = () => {
+    setIsLabStarted(true);
+  };
+
   return (
     <div>
+      {/* Progress Bar */}
+      <div className="h-2 bg-gray-200">
+        <div className="h-2 bg-green-600 transition-all" style={{ width: `${progress}%` }}></div>
+      </div>
+
       <header className="border-b border-gray-200">
         <div className="container mx-auto px-4 py-2">
           <h1 className="text-lg font-semibold">Google Cloud Skills Boost</h1>
@@ -13,11 +35,10 @@ function Second() {
       <nav className="bg-gray-100 border-b border-gray-200">
         <div className="container mx-auto px-4 py-2">
           <ol className="flex space-x-2 text-sm text-gray-600">
-             <li>
-             <Link to="/">Google Cloud Next 2023 Learning Path</Link>
-             </li>
-            
-             <li>&gt;</li>
+            <li>
+              <Link to="/">Google Cloud Next 2023 Learning Path</Link>
+            </li>
+            <li>&gt;</li>
             <li>Explore and Evaluate Models using Model Garden</li>
           </ol>
         </div>
@@ -26,17 +47,21 @@ function Second() {
         <div className="lg:w-1/4 lg:pr-8 flex flex-col space-y-4 mb-8 lg:mb-0">
           {/* Left Sidebar - Start Lab Button and Timer */}
           <div className="flex items-center space-x-4">
-            <button className="bg-green-600 text-white px-4 py-2 rounded-md w-full">Start Lab</button>
+            <button
+              className="bg-green-600 text-white px-4 py-2 rounded-md w-full"
+              onClick={startLab}
+              disabled={isLabStarted}
+            >
+              {isLabStarted ? 'Lab in Progress...' : 'Start Lab'}
+            </button>
             <div className="text-2xl font-mono">00:30:00</div>
           </div>
-          
-          {/* Left Sidebar - Lab Instructions and Tasks */}
-          </div>
+        </div>
 
         <div className="flex-1">
           {/* Central Content */}
           <div className="flex flex-col items-center justify-start bg-white p-4 rounded-md border border-gray-200 space-y-6 mb-4">
-    <h2 className="text-4xl font-bold mb-4">Explore and Evaluate Models using Model Garden</h2>
+            <h2 className="text-4xl font-bold mb-4">Explore and Evaluate Models using Model Garden</h2>
             <div className="flex items-center space-x-2 mb-4">
               <i className="fas fa-flask"></i>
               <span>Lab</span>
@@ -60,8 +85,7 @@ function Second() {
               <i className="fas fa-info-circle"></i>
               <span>This lab may incorporate AI tools to support your learning.</span>
             </div>
-            
-            {/* Additional Content Below AI Info */}
+
             <div className="mt-4 w-full overflow-y-auto max-h-64 p-2 border rounded-md">
             <h3 className="text-xl font-semibold">Additional Information</h3>
               <p className="text-sm text-gray-700 mt-2">
@@ -99,15 +123,14 @@ function Second() {
             <button className="bg-blue-600 text-white px-4 py-2 rounded-md">Next</button>
           </div>
         </aside>
-        
       </main>
     </div>
   );
 }
 
-// Export the App component
+// Export the Second component
 export default Second;
 
-// Create root and render the App component using React 18
+// Create root and render the Second component using React 18
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<Second />);

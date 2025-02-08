@@ -1,16 +1,19 @@
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+//import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from './Home';
 import Second from './Second';
+import React from 'react';
 function App() {
   return (
-    <Router>
+   
     <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/second" element={<Second />} />
-      </Routes>
-  </Router>
+    
+         <Route path="/" element={<Home />} />
+         <Route path="/second" element={<Second />} /> 
+     </Routes>
+ 
   );
 }
 
